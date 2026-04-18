@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Target - Expect More. Pay Less.</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<!-- ===================== NOTIFICATION TOAST ===================== -->
+<div id="notification-container"></div>
+
+<!-- ===================== NOTIFICATION PANEL ===================== -->
+<div id="notification-panel" class="notification-panel">
+    <div class="notif-panel-header">
+        <h3><i class="fas fa-bell"></i> Notifications</h3>
+        <button onclick="closeNotificationPanel()" class="notif-close-btn">&times;</button>
+    </div>
+    <div id="notif-panel-body" class="notif-panel-body">
+        <p class="notif-empty">No notifications yet</p>
+    </div>
+    <div class="notif-panel-footer">
+        <button onclick="clearAllNotifications()" class="btn-clear-notif">Clear All</button>
+        <div class="notif-channels">
+            <label><input type="checkbox" id="ch-app" checked> In-App</label>
+            <label><input type="checkbox" id="ch-email" checked> Email</label>
+            <label><input type="checkbox" id="ch-sms" checked> SMS</label>
+            <label><input type="checkbox" id="ch-push" checked> Push</label>
+        </div>
+    </div>
+</div>
+<div id="notif-overlay" class="notif-overlay" onclick="closeNotificationPanel()"></div>
+
+<!-- ===================== HEADER ===================== -->
+<header class="main-header">
+    <div class="header-top">
+        <div class="container header-top-inner">
+            <div class="header-left">
+                <a href="#" onclick="navigate('home')" class="logo">
+                    <div class="logo-bullseye"><i class="fas fa-bullseye"></i></div>
+                    <span class="logo-text">target</span>
+                </a>
+            </div>
+            <div class="header-search">
+                <input type="text" id="search-input" placeholder="What can we help you find?" onkeyup="handleSearch(event)">
+                <button class="search-btn" onclick="performSearch()"><i class="fas fa-search"></i></button>
+            </div>
+            <div class="header-right">
+                <a href="#" onclick="navigate('home')" class="header-icon" title="Account"><i class="fas fa-user"></i><span>Sign In</span></a>
+                <a href="#" onclick="openNotificationPanel()" class="header-icon notif-bell-wrapper" title="Notifications">
+                    <i class="fas fa-bell"></i><span>Alerts</span>
+                    <span id="notif-badge" class="notif-badge hidden">0</span>
+                </a>
+                <a href="#" onclick="navigate('cart')" class="header-icon cart-icon-wrapper" title="Cart">
+                    <i class="fas fa-shopping-cart"></i><span>Cart</span>
+                    <span id="cart-count" class="cart-badge hidden">0</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <nav class="header-nav">
+        <div class="container">
+            <ul class="nav-links">
+                <li><a href="#" onclick="navigate('home')">Home</a></li>
+                <li><a href="#" onclick="navigate('plp', 'all')">All Products</a></li>
+                <li><a href="#" onclick="navigate('plp', 'clothing')">Clothing</a></li>
+                <li><a href="#" onclick="navigate('plp', 'electronics')">Electronics</a></li>
+                <li><a href="#" onclick="navigate('plp', 'home-decor')">Home & Décor</a></li>
+                <li><a href="#" onclick="navigate('plp', 'grocery')">Grocery</a></li>
+                <li><a href="#" onclick="navigate('plp', 'beauty')">Beauty</a></li>
+                <li><a href="#" class="nav-deals" onclick="navigate('plp', 'deals')">Top Deals 🔥</a></li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<!-- ===================== PAGES ===================== -->
+<main id="app-main">
+
+    <!-- ========== HOME PAGE ========== -->
+    <section id="page-home" class="page active">
+        <!-- Hero -->
+        <div class="hero">
+            <div class="hero-slide active" id="hero-slide-0">
+                <div class="hero-content">
+                    <span class="hero-tag">This Week Only</span>
+                    <h1>Summer Sale</h1>
+                    <p>Up to <strong>40% off</strong> on thousands of items. Expect more, pay less.</p>
+                    <button class="btn-primary" onclick="navigate('plp','deals')">Shop Deals</button>
+                </div>
+            </div>
+            <div class="hero-slide" id="hero-slide-1">
+                <div class="hero-content">
+                    <span class="hero-tag">New Arrivals</span>
+                    <h1>Fresh Styles for Everyone</h1>
+                    <p>Discover the latest trends in fashion, home & more.</p>
+                    <button class="btn-primary" onclick="navigate('plp','clothing')">Shop Now</button>
+                </div>
+            </div>
+            <div class="hero-slide" id="hero-slide-2">
+                <div class="hero-content">
+                    <span class="hero-tag">Tech Deals</span>
+                    <h1>Upgrade Your Setup</h1>
+                    <p>Top electronics at unbeatable prices.</p>
+                    <button class="btn-primary" onclick="navigate('plp','electronics')">Shop Electronics</button>
+                </div>
+            </div>
+            <div class="hero-dots">
+                <span class="dot active" onclick="goToSlide(0)"></span>
+                <span class="dot" onclick="goToSlide(1)"></span>
+                <span class="dot" onclick="goToSlide(2)"></span>
+            </div>
+        </div>
+
+        <!-- Offer Banners -->
+        <div class="container">
+            <div class="offers-grid">
+                <div class="offer-card offer-red" onclick="navigate('plp','deals')">
+                    <div class="offer-icon"><i class="fas fa-tags"></i></div>
+                    <h3>Buy 1 Get 1 50% Off</h3>
+                    <p>Select clothing & accessories</p>
+                    <span class="offer-code">BOGO50</span>
+                </div>
+                <div class="offer-card offer-dark" onclick="navigate('plp','electronics')">
+                    <div class="offer-icon"><i class="fas fa-bolt"></i></div>
+                    <h3>$50 Off Electronics</h3>
+                    <p>On orders $200+</p>
+                    <span class="offer-code">TECH50</span>
+                </div>
+                <div class="offer-card offer-green" onclick="navigate('plp','grocery')">
+                    <div class="offer-icon"><i class="fas fa-truck"></i></div>
+                    <h3>Free Shipping</h3>
+                    <p>On grocery orders $35+</p>
+                    <span class="offer-code">FREESHIP</span>
+                </div>
+                <div class="offer-card offer-purple" onclick="navigate('plp','beauty')">
+                    <div class="offer-icon"><i class="fas fa-gift"></i></div>
+                    <h3>20% Off Beauty</h3>
+                    <p>New Circle members</p>
+                    <span class="offer-code">BEAUTY20</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Categories -->
+        <div class="container section">
+            <h2 class="section-title">Shop by Category</h2>
+            <div class="categories-grid">
+                <div class="category-card" onclick="navigate('plp','clothing')">
+                    <div class="cat-icon"><i class="fas fa-tshirt"></i></div>
+                    <span>Clothing</span>
+                </div>
+                <div class="category-card" onclick="navigate('plp','electronics')">
+                    <div class="cat-icon"><i class="fas fa-laptop"></i></div>
+                    <span>Electronics</span>
+                </div>
+                <div class="category-card" onclick="navigate('plp','home-decor')">
+                    <div class="cat-icon"><i class="fas fa-couch"></i></div>
+                    <span>Home & Décor</span>
+                </div>
+                <div class="category-card" onclick="navigate('plp','grocery')">
+                    <div class="cat-icon"><i class="fas fa-apple-alt"></i></div>
+                    <span>Grocery</span>
+                </div>
+                <div class="category-card" onclick="navigate('plp','beauty')">
+                    <div class="cat-icon"><i class="fas fa-spa"></i></div>
+                    <span>Beauty</span>
+                </div>
+                <div class="category-card" onclick="navigate('plp','deals')">
+                    <div class="cat-icon"><i class="fas fa-percent"></i></div>
+                    <span>Top Deals</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Featured Products -->
+        <div class="container section">
+            <h2 class="section-title">Featured Products</h2>
+            <div id="featured-products" class="products-grid"></div>
+        </div>
+
+        <!-- Trending -->
+        <div class="container section">
+            <h2 class="section-title">Trending Now</h2>
+            <div id="trending-products" class="products-grid"></div>
+        </div>
+
+        <!-- Newsletter -->
+        <div class="newsletter-section">
+            <div class="container newsletter-inner">
+                <h2>Get the latest deals & offers</h2>
+                <p>Sign up for emails and get exclusive access to savings, new arrivals & more.</p>
+                <div class="newsletter-form">
+                    <input type="email" id="newsletter-email" placeholder="Enter your email address">
+                    <button class="btn-primary" onclick="subscribeNewsletter()">Subscribe</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== PRODUCT LISTING PAGE ========== -->
+    <section id="page-plp" class="page">
+        <div class="container plp-container">
+            <div class="breadcrumb" id="plp-breadcrumb">
+                <a href="#" onclick="navigate('home')">Home</a> / <span>All Products</span>
+            </div>
+            <div class="plp-header">
+                <h1 id="plp-title">All Products</h1>
+                <span id="plp-count" class="plp-count"></span>
+            </div>
+            <div class="plp-layout">
+                <aside class="plp-filters">
+                    <h3>Filters</h3>
+                    <div class="filter-group">
+                        <h4>Category</h4>
+                        <label><input type="checkbox" name="filter-cat" value="clothing" onchange="applyFilters()"> Clothing</label>
+                        <label><input type="checkbox" name="filter-cat" value="electronics" onchange="applyFilters()"> Electronics</label>
+                        <label><input type="checkbox" name="filter-cat" value="home-decor" onchange="applyFilters()"> Home & Décor</label>
+                        <label><input type="checkbox" name="filter-cat" value="grocery" onchange="applyFilters()"> Grocery</label>
+                        <label><input type="checkbox" name="filter-cat" value="beauty" onchange="applyFilters()"> Beauty</label>
+                    </div>
+                    <div class="filter-group">
+                        <h4>Price Range</h4>
+                        <label><input type="checkbox" name="filter-price" value="0-25" onchange="applyFilters()"> Under $25</label>
+                        <label><input type="checkbox" name="filter-price" value="25-50" onchange="applyFilters()"> $25 - $50</label>
+                        <label><input type="checkbox" name="filter-price" value="50-100" onchange="applyFilters()"> $50 - $100</label>
+                        <label><input type="checkbox" name="filter-price" value="100-500" onchange="applyFilters()"> $100 - $500</label>
+                        <label><input type="checkbox" name="filter-price" value="500-9999" onchange="applyFilters()"> $500+</label>
+                    </div>
+                    <div class="filter-group">
+                        <h4>Rating</h4>
+                        <label><input type="checkbox" name="filter-rating" value="4" onchange="applyFilters()"> 4★ & up</label>
+                        <label><input type="checkbox" name="filter-rating" value="3" onchange="applyFilters()"> 3★ & up</label>
+                    </div>
+                    <div class="filter-group">
+                        <label class="deals-only-label"><input type="checkbox" id="filter-deals" onchange="applyFilters()"> <span class="deals-tag">Deals Only</span></label>
+                    </div>
+                    <button class="btn-outline btn-clear-filters" onclick="clearFilters()">Clear Filters</button>
+                </aside>
+                <div class="plp-main">
+                    <div class="plp-sort">
+                        <label>Sort by:</label>
+                        <select id="plp-sort-select" onchange="applyFilters()">
+                            <option value="featured">Featured</option>
+                            <option value="price-asc">Price: Low to High</option>
+                            <option value="price-desc">Price: High to Low</option>
+                            <option value="rating">Highest Rated</option>
+                            <option value="name">Name A-Z</option>
+                        </select>
+                    </div>
+                    <div id="plp-products" class="products-grid"></div>
+                    <div id="plp-no-results" class="no-results hidden">
+                        <i class="fas fa-search"></i>
+                        <p>No products match your filters.</p>
+                        <button class="btn-outline" onclick="clearFilters()">Clear Filters</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== PRODUCT DETAIL PAGE ========== -->
+    <section id="page-pdp" class="page">
+        <div class="container pdp-container">
+            <div class="breadcrumb" id="pdp-breadcrumb">
+                <a href="#" onclick="navigate('home')">Home</a> / <a href="#" onclick="navigate('plp','all')">Products</a> / <span id="pdp-breadcrumb-name"></span>
+            </div>
+            <div class="pdp-layout">
+                <div class="pdp-images">
+                    <div class="pdp-main-image" id="pdp-main-image"></div>
+                    <div class="pdp-thumb-row" id="pdp-thumbnails"></div>
+                </div>
+                <div class="pdp-info">
+                    <h1 id="pdp-name"></h1>
+                    <div class="pdp-rating" id="pdp-rating"></div>
+                    <div class="pdp-price" id="pdp-price"></div>
+                    <p class="pdp-description" id="pdp-description"></p>
+                    <div id="pdp-variants" class="pdp-variants"></div>
+                    <div class="pdp-quantity">
+                        <label>Quantity:</label>
+                        <div class="qty-control">
+                            <button onclick="changePdpQty(-1)">-</button>
+                            <span id="pdp-qty">1</span>
+                            <button onclick="changePdpQty(1)">+</button>
+                        </div>
+                    </div>
+                    <div class="pdp-actions">
+                        <button class="btn-primary btn-lg" onclick="addToCartFromPDP()"><i class="fas fa-cart-plus"></i> Add to Cart</button>
+                        <button class="btn-outline btn-lg" onclick="addToWishlist()"><i class="fas fa-heart"></i> Save</button>
+                    </div>
+                    <div class="pdp-shipping">
+                        <div><i class="fas fa-truck"></i> Free shipping on orders $35+</div>
+                        <div><i class="fas fa-store"></i> Free pickup at your local Target</div>
+                        <div><i class="fas fa-undo"></i> Free returns within 90 days</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Related Products -->
+            <div class="section">
+                <h2 class="section-title">You Might Also Like</h2>
+                <div id="pdp-related" class="products-grid"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CART PAGE ========== -->
+    <section id="page-cart" class="page">
+        <div class="container cart-container">
+            <h1>Shopping Cart</h1>
+            <div id="cart-empty" class="cart-empty">
+                <i class="fas fa-shopping-cart"></i>
+                <h2>Your cart is empty</h2>
+                <p>Looks like you haven't added anything yet.</p>
+                <button class="btn-primary" onclick="navigate('plp','all')">Start Shopping</button>
+            </div>
+            <div id="cart-content" class="cart-layout hidden">
+                <div class="cart-items" id="cart-items"></div>
+                <div class="cart-summary">
+                    <h3>Order Summary</h3>
+                    <div class="summary-row"><span>Subtotal</span><span id="cart-subtotal">$0.00</span></div>
+                    <div class="summary-row"><span>Shipping</span><span id="cart-shipping">FREE</span></div>
+                    <div class="summary-row"><span>Estimated Tax</span><span id="cart-tax">$0.00</span></div>
+                    <div class="promo-input">
+                        <input type="text" id="promo-code" placeholder="Promo code">
+                        <button class="btn-outline" onclick="applyPromo()">Apply</button>
+                    </div>
+                    <div class="summary-row discount-row hidden" id="cart-discount-row"><span>Discount</span><span id="cart-discount">-$0.00</span></div>
+                    <div class="summary-row total-row"><span>Estimated Total</span><span id="cart-total">$0.00</span></div>
+                    <button class="btn-primary btn-lg btn-block" onclick="navigate('checkout')">Proceed to Checkout</button>
+                    <a href="#" class="continue-shopping" onclick="navigate('plp','all')">Continue Shopping</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CHECKOUT PAGE ========== -->
+    <section id="page-checkout" class="page">
+        <div class="container checkout-container">
+            <h1>Checkout</h1>
+            <div class="checkout-steps">
+                <div class="step active" id="step-shipping-tab" onclick="goToCheckoutStep('shipping')"><span>1</span> Shipping</div>
+                <div class="step" id="step-payment-tab" onclick="goToCheckoutStep('payment')"><span>2</span> Payment</div>
+                <div class="step" id="step-review-tab" onclick="goToCheckoutStep('review')"><span>3</span> Review</div>
+            </div>
+            <div class="checkout-layout">
+                <div class="checkout-form-area">
+                    <!-- Step 1: Shipping -->
+                    <div id="checkout-step-shipping" class="checkout-step active">
+                        <h2>Shipping Information</h2>
+                        <form id="shipping-form" class="checkout-form" onsubmit="return false;">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>First Name *</label>
+                                    <input type="text" id="ship-fname" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Last Name *</label>
+                                    <input type="text" id="ship-lname" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Street Address *</label>
+                                <input type="text" id="ship-address" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Apt / Suite (optional)</label>
+                                <input type="text" id="ship-apt">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>City *</label>
+                                    <input type="text" id="ship-city" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>State *</label>
+                                    <select id="ship-state" required>
+                                        <option value="">Select</option>
+                                        <option>Alabama</option><option>Alaska</option><option>Arizona</option><option>Arkansas</option>
+                                        <option>California</option><option>Colorado</option><option>Connecticut</option><option>Delaware</option>
+                                        <option>Florida</option><option>Georgia</option><option>Hawaii</option><option>Idaho</option>
+                                        <option>Illinois</option><option>Indiana</option><option>Iowa</option><option>Kansas</option>
+                                        <option>Kentucky</option><option>Louisiana</option><option>Maine</option><option>Maryland</option>
+                                        <option>Massachusetts</option><option>Michigan</option><option>Minnesota</option><option>Mississippi</option>
+                                        <option>Missouri</option><option>Montana</option><option>Nebraska</option><option>Nevada</option>
+                                        <option>New Hampshire</option><option>New Jersey</option><option>New Mexico</option><option>New York</option>
+                                        <option>North Carolina</option><option>North Dakota</option><option>Ohio</option><option>Oklahoma</option>
+                                        <option>Oregon</option><option>Pennsylvania</option><option>Rhode Island</option><option>South Carolina</option>
+                                        <option>South Dakota</option><option>Tennessee</option><option>Texas</option><option>Utah</option>
+                                        <option>Vermont</option><option>Virginia</option><option>Washington</option><option>West Virginia</option>
+                                        <option>Wisconsin</option><option>Wyoming</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>ZIP Code *</label>
+                                    <input type="text" id="ship-zip" required maxlength="10">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Email *</label>
+                                    <input type="email" id="ship-email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Phone *</label>
+                                    <input type="tel" id="ship-phone" required>
+                                </div>
+                            </div>
+                            <h3>Shipping Method</h3>
+                            <div class="shipping-methods">
+                                <label class="shipping-option">
+                                    <input type="radio" name="ship-method" value="standard" checked>
+                                    <div class="ship-opt-info">
+                                        <strong>Standard Shipping</strong><span>5-7 business days</span>
+                                    </div>
+                                    <span class="ship-opt-price">FREE</span>
+                                </label>
+                                <label class="shipping-option">
+                                    <input type="radio" name="ship-method" value="express">
+                                    <div class="ship-opt-info">
+                                        <strong>Express Shipping</strong><span>2-3 business days</span>
+                                    </div>
+                                    <span class="ship-opt-price">$9.99</span>
+                                </label>
+                                <label class="shipping-option">
+                                    <input type="radio" name="ship-method" value="overnight">
+                                    <div class="ship-opt-info">
+                                        <strong>Overnight Shipping</strong><span>Next business day</span>
+                                    </div>
+                                    <span class="ship-opt-price">$19.99</span>
+                                </label>
+                            </div>
+                            <button class="btn-primary btn-lg" onclick="goToCheckoutStep('payment')">Continue to Payment</button>
+                        </form>
+                    </div>
+                    <!-- Step 2: Payment -->
+                    <div id="checkout-step-payment" class="checkout-step">
+                        <h2>Payment Information</h2>
+                        <form id="payment-form" class="checkout-form" onsubmit="return false;">
+                            <div class="payment-methods-select">
+                                <label class="pay-method-opt active" onclick="selectPayMethod('card')">
+                                    <i class="fas fa-credit-card"></i> Credit / Debit Card
+                                </label>
+                                <label class="pay-method-opt" onclick="selectPayMethod('paypal')">
+                                    <i class="fab fa-paypal"></i> PayPal
+                                </label>
+                                <label class="pay-method-opt" onclick="selectPayMethod('apple')">
+                                    <i class="fab fa-apple-pay"></i> Apple Pay
+                                </label>
+                            </div>
+                            <div id="pay-card-fields">
+                                <div class="form-group">
+                                    <label>Name on Card *</label>
+                                    <input type="text" id="pay-name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Card Number *</label>
+                                    <input type="text" id="pay-card" required maxlength="19" placeholder="1234 5678 9012 3456" oninput="formatCardNumber(this)">
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Expiry Date *</label>
+                                        <input type="text" id="pay-expiry" required maxlength="5" placeholder="MM/YY" oninput="formatExpiry(this)">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>CVV *</label>
+                                        <input type="password" id="pay-cvv" required maxlength="4" placeholder="***">
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="pay-paypal-fields" class="hidden">
+                                <div class="alt-pay-msg"><i class="fab fa-paypal fa-3x"></i><p>You will be redirected to PayPal to complete your payment.</p></div>
+                            </div>
+                            <div id="pay-apple-fields" class="hidden">
+                                <div class="alt-pay-msg"><i class="fab fa-apple-pay fa-3x"></i><p>Confirm with Apple Pay on your device.</p></div>
+                            </div>
+                            <label class="save-card-label"><input type="checkbox" id="save-card"> Save this payment method for future orders</label>
+                            <div class="form-row">
+                                <button class="btn-outline btn-lg" onclick="goToCheckoutStep('shipping')">Back</button>
+                                <button class="btn-primary btn-lg" onclick="goToCheckoutStep('review')">Review Order</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- Step 3: Review -->
+                    <div id="checkout-step-review" class="checkout-step">
+                        <h2>Review Your Order</h2>
+                        <div class="review-section">
+                            <h3>Shipping To</h3>
+                            <div id="review-shipping-info" class="review-box"></div>
+                        </div>
+                        <div class="review-section">
+                            <h3>Payment Method</h3>
+                            <div id="review-payment-info" class="review-box"></div>
+                        </div>
+                        <div class="review-section">
+                            <h3>Items (<span id="review-item-count">0</span>)</h3>
+                            <div id="review-items" class="review-items"></div>
+                        </div>
+                        <div class="form-row">
+                            <button class="btn-outline btn-lg" onclick="goToCheckoutStep('payment')">Back</button>
+                            <button class="btn-primary btn-lg btn-place-order" onclick="placeOrder()"><i class="fas fa-lock"></i> Place Order</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="checkout-summary">
+                    <h3>Order Summary</h3>
+                    <div id="checkout-summary-items"></div>
+                    <div class="summary-row"><span>Subtotal</span><span id="co-subtotal">$0.00</span></div>
+                    <div class="summary-row"><span>Shipping</span><span id="co-shipping">FREE</span></div>
+                    <div class="summary-row"><span>Estimated Tax</span><span id="co-tax">$0.00</span></div>
+                    <div class="summary-row discount-row hidden" id="co-discount-row"><span>Discount</span><span id="co-discount">-$0.00</span></div>
+                    <div class="summary-row total-row"><span>Total</span><span id="co-total">$0.00</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== ORDER PROCESSING (SPINNER) ========== -->
+    <section id="page-processing" class="page">
+        <div class="processing-screen">
+            <div class="spinner"></div>
+            <h2>Processing your order...</h2>
+            <p>Please wait while we confirm your payment.</p>
+        </div>
+    </section>
+
+    <!-- ========== ORDER CONFIRMATION PAGE ========== -->
+    <section id="page-confirmation" class="page">
+        <div class="container confirmation-container">
+            <div class="confirm-icon"><i class="fas fa-check-circle"></i></div>
+            <h1>Order Confirmed!</h1>
+            <p class="confirm-subtitle">Thank you for your purchase.</p>
+            <div class="confirm-order-number">Order #<span id="confirm-order-id"></span></div>
+            <div class="confirm-details">
+                <div class="confirm-section">
+                    <h3>Shipping To</h3>
+                    <div id="confirm-ship-info"></div>
+                </div>
+                <div class="confirm-section">
+                    <h3>Estimated Delivery</h3>
+                    <div id="confirm-delivery"></div>
+                </div>
+                <div class="confirm-section">
+                    <h3>Payment</h3>
+                    <div id="confirm-pay-info"></div>
+                </div>
+            </div>
+            <div class="confirm-items">
+                <h3>Items Ordered</h3>
+                <div id="confirm-items-list"></div>
+            </div>
+            <div class="confirm-total-box">
+                <div class="summary-row total-row"><span>Total Charged</span><span id="confirm-total"></span></div>
+            </div>
+            <div class="confirm-notifications">
+                <h3>Notifications Sent</h3>
+                <div id="confirm-notif-channels"></div>
+            </div>
+            <button class="btn-primary btn-lg" onclick="navigate('home')">Continue Shopping</button>
+        </div>
+    </section>
+
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="main-footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div>
+                <h4>About Target</h4>
+                <ul>
+                    <li><a href="#">Corporate Overview</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">News & Blog</a></li>
+                    <li><a href="#">Target Brands</a></li>
+                    <li><a href="#">Sustainability</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Help</h4>
+                <ul>
+                    <li><a href="#">Target Help</a></li>
+                    <li><a href="#">Returns</a></li>
+                    <li><a href="#">Track Orders</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">Recalls</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Stores</h4>
+                <ul>
+                    <li><a href="#">Find a Store</a></li>
+                    <li><a href="#">Clinic</a></li>
+                    <li><a href="#">Pharmacy</a></li>
+                    <li><a href="#">Optical</a></li>
+                    <li><a href="#">More In-Store Services</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Connect With Us</h4>
+                <div class="footer-social">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                </div>
+                <div class="footer-app-badges">
+                    <button class="app-badge"><i class="fab fa-apple"></i> App Store</button>
+                    <button class="app-badge"><i class="fab fa-google-play"></i> Google Play</button>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Target Brands, Inc. | <a href="#">Terms</a> | <a href="#">Privacy</a> | <a href="#">CA Supply Chain Act</a> | <a href="#">Interest-Based Ads</a></p>
+        </div>
+    </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
